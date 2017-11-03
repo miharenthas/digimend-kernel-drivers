@@ -775,6 +775,91 @@ static __u8 uclogic_xppen_artist22HD_rdesc1[] = {
 	0xC0                /*  End Collection                          */
 };
 
+/* Fixed report descriptor template for Ugee EX07 */
+static const __u8 ugee_ex07_rdesc_template[] = {
+	0x05, 0x0D,             /*  Usage Page (Digitizer),                 */
+	0x09, 0x02,             /*  Usage (Pen),                            */
+	0xA1, 0x01,             /*  Collection (Application),               */
+	0x85, 0x07,             /*      Report ID (7),                      */
+	0x09, 0x20,             /*      Usage (Stylus),                     */
+	0xA0,                   /*      Collection (Physical),              */
+	0x14,                   /*          Logical Minimum (0),            */
+	0x25, 0x01,             /*          Logical Maximum (1),            */
+	0x75, 0x01,             /*          Report Size (1),                */
+	0x09, 0x42,             /*          Usage (Tip Switch),             */
+	0x09, 0x44,             /*          Usage (Barrel Switch),          */
+	0x09, 0x46,             /*          Usage (Tablet Pick),            */
+	0x95, 0x03,             /*          Report Count (3),               */
+	0x81, 0x02,             /*          Input (Variable),               */
+	0x95, 0x03,             /*          Report Count (3),               */
+	0x81, 0x03,             /*          Input (Constant, Variable),     */
+	0x09, 0x32,             /*          Usage (In Range),               */
+	0x95, 0x01,             /*          Report Count (1),               */
+	0x81, 0x02,             /*          Input (Variable),               */
+	0x95, 0x01,             /*          Report Count (1),               */
+	0x81, 0x03,             /*          Input (Constant, Variable),     */
+	0x75, 0x10,             /*          Report Size (16),               */
+	0x95, 0x01,             /*          Report Count (1),               */
+	0xA4,                   /*          Push,                           */
+	0x05, 0x01,             /*          Usage Page (Desktop),           */
+	0x65, 0x13,             /*          Unit (Inch),                    */
+	0x55, 0xFD,             /*          Unit Exponent (-3),             */
+	0x34,                   /*          Physical Minimum (0),           */
+	0x09, 0x30,             /*          Usage (X),                      */
+	0x27, UCLOGIC_PH(X_LM), /*          Logical Maximum (PLACEHOLDER),  */
+	0x47, UCLOGIC_PH(X_PM), /*          Physical Maximum (PLACEHOLDER), */
+	0x81, 0x02,             /*          Input (Variable),               */
+	0x09, 0x31,             /*          Usage (Y),                      */
+	0x27, UCLOGIC_PH(Y_LM), /*          Logical Maximum (PLACEHOLDER),  */
+	0x47, UCLOGIC_PH(Y_PM), /*          Physical Maximum (PLACEHOLDER), */
+	0x81, 0x02,             /*          Input (Variable),               */
+	0xB4,                   /*          Pop,                            */
+	0x09, 0x30,             /*          Usage (Tip Pressure),           */
+	0x27,
+	UCLOGIC_PH(PRESSURE_LM),/*          Logical Maximum (PLACEHOLDER),  */
+	0x81, 0x02,             /*          Input (Variable),               */
+	0xC0,                   /*      End Collection,                     */
+	0xC0,                   /*  End Collection                          */
+	0x05, 0x01,             /*  Usage Page (Desktop),                   */
+	0x09, 0x07,             /*  Usage (Keypad),                         */
+	0xA1, 0x01,             /*  Collection (Application),               */
+	0x85, 0x06,             /*      Report ID (6),                      */
+	0x05, 0x0D,             /*      Usage Page (Digitizer),             */
+	0x09, 0x39,             /*      Usage (Tablet Function Keys),       */
+	0xA0,                   /*      Collection (Physical),              */
+	0x05, 0x09,             /*          Usage Page (Button),            */
+	0x75, 0x01,             /*          Report Size (1),                */
+	0x19, 0x03,             /*          Usage Minimum (03h),            */
+	0x29, 0x06,             /*          Usage Maximum (06h),            */
+	0x95, 0x04,             /*          Report Count (4),               */
+	0x81, 0x02,             /*          Input (Variable),               */
+	0x95, 0x1A,             /*          Report Count (26),              */
+	0x81, 0x03,             /*          Input (Constant, Variable),     */
+	0x19, 0x01,             /*          Usage Minimum (01h),            */
+	0x29, 0x02,             /*          Usage Maximum (02h),            */
+	0x95, 0x02,             /*          Report Count (2),               */
+	0x81, 0x02,             /*          Input (Variable),               */
+	0x05, 0x0D,             /*          Usage Page (Digitizer),         */
+	0x09, 0x20,             /*          Usage (Stylus),                 */
+	0x14,                   /*          Logical Minimum (0),            */
+	0x25, 0x01,             /*          Logical Maximum (1),            */
+	0x09, 0x44,             /*          Usage (Barrel Switch),          */
+	0x95, 0x01,             /*          Report Count (1),               */
+	0x81, 0x02,             /*          Input (Variable),               */
+	0x05, 0x01,             /*          Usage Page (Desktop),           */
+	0x09, 0x30,             /*          Usage (X),                      */
+	0x09, 0x31,             /*          Usage (Y),                      */
+	0x95, 0x02,             /*          Report Count (2),               */
+	0x81, 0x02,             /*          Input (Variable),               */
+	0x05, 0x0D,             /*          Usage Page (Digitizer),         */
+	0x09, 0xFF,             /*          Usage (FFh),                    */
+	0x75, 0x05,             /*          Report Size (5),                */
+	0x95, 0x01,             /*          Report Count (1),               */
+	0x81, 0x02,             /*          Input (Variable),               */
+	0xC0,                   /*      End Collection,                     */
+	0xC0                    /*  End Collection                          */
+};
+
 /* Fixed virtual pad report descriptor */
 static const __u8 uclogic_buttonpad_rdesc[] = {
 	0x05, 0x01,             /*  Usage Page (Desktop),                   */
@@ -1062,9 +1147,13 @@ cleanup:
  * Enable fully-functional tablet mode, retrieve device parameters and
  * generate corresponding report descriptor.
  *
- * @hdev:	HID device
+ * @hdev:		HID device
+ * @rdesc_template_ptr	Report descriptor template pointer
+ * @rdesc_template_len	Report descriptor template length
  */
-static int uclogic_probe_tablet(struct hid_device *hdev)
+static int uclogic_probe_tablet(struct hid_device *hdev,
+				const __u8 *rdesc_template_ptr,
+				size_t rdesc_template_len)
 {
 	int rc;
 	struct uclogic_drvdata *drvdata = hid_get_drvdata(hdev);
@@ -1098,17 +1187,16 @@ static int uclogic_probe_tablet(struct hid_device *hdev)
 
 	/* Allocate fixed report descriptor */
 	drvdata->rdesc = devm_kzalloc(&hdev->dev,
-				sizeof(uclogic_tablet_rdesc_template),
+				rdesc_template_len,
 				GFP_KERNEL);
 	if (drvdata->rdesc == NULL) {
 		rc = -ENOMEM;
 		goto cleanup;
 	}
-	drvdata->rsize = sizeof(uclogic_tablet_rdesc_template);
+	drvdata->rsize = rdesc_template_len;
 
 	/* Format fixed report descriptor */
-	memcpy(drvdata->rdesc, uclogic_tablet_rdesc_template,
-		drvdata->rsize);
+	memcpy(drvdata->rdesc, rdesc_template_ptr, drvdata->rsize);
 	for (p = drvdata->rdesc;
 	     p <= drvdata->rdesc + drvdata->rsize - 4;) {
 		if (p[0] == 0xFE && p[1] == 0xED && p[2] == 0x1D &&
@@ -1243,7 +1331,10 @@ static int uclogic_probe(struct hid_device *hdev,
 	case USB_DEVICE_ID_UCLOGIC_UGEE_TABLET_45:
 		/* If this is the pen interface */
 		if (intf->cur_altsetting->desc.bInterfaceNumber == 0) {
-			rc = uclogic_probe_tablet(hdev);
+			rc = uclogic_probe_tablet(
+					hdev,
+					uclogic_tablet_rdesc_template,
+					sizeof(uclogic_tablet_rdesc_template));
 			if (rc) {
 				hid_err(hdev, "tablet enabling failed\n");
 				return rc;
@@ -1257,11 +1348,13 @@ static int uclogic_probe(struct hid_device *hdev,
 		}
 		break;
 	case USB_DEVICE_ID_UGTIZER_TABLET_GP0610:
-	case USB_DEVICE_ID_UGEE_TABLET_EX07S:
 	case USB_DEVICE_ID_UGEE_XPPEN_TABLET_G540:
 		/* If this is the pen interface */
 		if (intf->cur_altsetting->desc.bInterfaceNumber == 1) {
-			rc = uclogic_probe_tablet(hdev);
+			rc = uclogic_probe_tablet(
+					hdev,
+					uclogic_tablet_rdesc_template,
+					sizeof(uclogic_tablet_rdesc_template));
 			if (rc) {
 				hid_err(hdev, "tablet enabling failed\n");
 				return rc;
@@ -1269,6 +1362,23 @@ static int uclogic_probe(struct hid_device *hdev,
 			drvdata->invert_pen_inrange = true;
 		} else {
 			drvdata->ignore_pen_usage = true;
+		}
+		break;
+	case USB_DEVICE_ID_UGEE_TABLET_EX07S:
+		/* If this is the pen interface */
+		if (intf->cur_altsetting->desc.bInterfaceNumber == 1) {
+			rc = uclogic_probe_tablet(
+					hdev,
+					ugee_ex07_rdesc_template,
+					sizeof(ugee_ex07_rdesc_template));
+			if (rc) {
+				hid_err(hdev, "tablet enabling failed\n");
+				return rc;
+			}
+			drvdata->invert_pen_inrange = true;
+		} else {
+			/* Ignore unused interface #0 */
+			return -ENODEV;
 		}
 		break;
 	case USB_DEVICE_ID_UCLOGIC_TABLET_TWHA60:
@@ -1279,7 +1389,10 @@ static int uclogic_probe(struct hid_device *hdev,
 		if (udev->config->desc.bNumInterfaces == 3) {
 			/* If it is the pen interface */
 			if (intf->cur_altsetting->desc.bInterfaceNumber == 0) {
-				rc = uclogic_probe_tablet(hdev);
+				rc = uclogic_probe_tablet(
+					hdev,
+					uclogic_tablet_rdesc_template,
+					sizeof(uclogic_tablet_rdesc_template));
 				if (rc) {
 					hid_err(hdev, "tablet enabling failed\n");
 					return rc;
@@ -1297,7 +1410,10 @@ static int uclogic_probe(struct hid_device *hdev,
 		/* If this is the pen interface of WP5540U v2 */
 		if (hdev->dev_rsize == WP5540U_V2_RDESC_ORIG_SIZE &&
 		    intf->cur_altsetting->desc.bInterfaceNumber == 0) {
-			rc = uclogic_probe_tablet(hdev);
+			rc = uclogic_probe_tablet(
+					hdev,
+					uclogic_tablet_rdesc_template,
+					sizeof(uclogic_tablet_rdesc_template));
 			if (rc) {
 				hid_err(hdev, "tablet enabling failed\n");
 				return rc;
