@@ -692,12 +692,15 @@ static int uclogic_params_probe_static(struct uclogic_params **pparams,
 	case USB_DEVICE_ID_UCLOGIC_UGEE_TABLET_81:
 	case USB_DEVICE_ID_UCLOGIC_DRAWIMAGE_G3:
 	case USB_DEVICE_ID_UCLOGIC_UGEE_TABLET_45:
-	case USB_DEVICE_ID_UCLOGIC_UGEE_TABLET_47:
 		pen_unused = (bInterfaceNumber != 0);
 		break;
 	case USB_DEVICE_ID_UGTIZER_TABLET_GP0610:
 	case USB_DEVICE_ID_UGEE_XPPEN_TABLET_G540:
 		pen_unused = (bInterfaceNumber != 1);
+		break;
+	case USB_DEVICE_ID_UCLOGIC_XPPEN_ARTIST_22HD:
+		desc_ptr = uclogic_rdesc_xppen_artist22HD_arr;
+		desc_size = uclogic_rdesc_xppen_artist22HD_size;
 		break;
 	}
 
@@ -787,7 +790,7 @@ static int uclogic_params_probe_dynamic(struct uclogic_params **pparams,
 	case USB_DEVICE_ID_UCLOGIC_UGEE_TABLET_81:
 	case USB_DEVICE_ID_UCLOGIC_DRAWIMAGE_G3:
 	case USB_DEVICE_ID_UCLOGIC_UGEE_TABLET_45:
-	case USB_DEVICE_ID_UCLOGIC_UGEE_TABLET_47:
+	case USB_DEVICE_ID_UCLOGIC_XPPEN_ARTIST_22HD:
 	case USB_DEVICE_ID_UCLOGIC_TABLET_TWHA60:
 		/* Skip non-pen interfaces */
 		if (bInterfaceNumber != 0) {
